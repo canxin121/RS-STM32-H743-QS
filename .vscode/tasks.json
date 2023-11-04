@@ -31,6 +31,16 @@
                 "--target",
                 "thumbv7em-none-eabihf"
             ]
+        },
+        {
+            "label": "probe-rs erase",
+            "type": "shell",
+            "command": "probe-rs",
+            "args": [
+                "erase",
+                "--chip",
+                "STM32H745ZITx",
+            ]
         }
     ]
 }
