@@ -12,7 +12,7 @@ use cortex_m_rt::entry;
 #[entry]
 fn main() -> ! {
     let cp = cortex_m::Peripherals::take().unwrap();
-    let dp = stm32h7xx_hal::stm32::pac::take().unwrap();
+    let dp = stm32h7xx_hal::pac::Peripherals::take().unwrap();
     let rcc = dp.RCC.constrain();
 
     let pwr = dp.PWR.constrain();
