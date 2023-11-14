@@ -18,6 +18,21 @@
             },
         },
         {
+            "label": "cargo build Crt with debug",
+            "type": "shell",
+            "command": "~/.cargo/bin/cargo", // note: full path to the cargo
+            "args": [
+                "build",
+                "--bin",
+                "${fileBasenameNoExtension}",
+                "--profile=release-with-debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
             "label": "cargo flash release Crt",
             "type": "shell",
             "command": "~/.cargo/bin/cargo",
