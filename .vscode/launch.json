@@ -11,7 +11,7 @@
             "cwd": "${workspaceRoot}",
             "connectUnderReset": false,
             "chip": "STM32H745ZITx",
-            "preLaunchTask": "cargo build Crt with debug",
+            "preLaunchTask": "cargo build Crt",
             "internalConsoleOptions": "openOnSessionStart",
             "flashingConfig": {
                 "flashingEnabled": true,
