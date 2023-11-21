@@ -16,12 +16,11 @@
                 "-f",
                 "./stm32h7x_dual_bank.cfg",
                 "-c",
-                "program ./target/thumbv7em-none-eabihf/release/${fileBasenameNoExtension} verify reset exit",
+                "init; reset halt; flash erase_sector 0 0 last; program ./target/thumbv7em-none-eabihf/release/${fileBasenameNoExtension} verify reset exit",
             ],
             "group": "build",
             "dependsOn": [
                 "cargo build release",
-                "OpenOcd Erase"
             ],
         },
         {
@@ -34,12 +33,11 @@
                 "-f",
                 "./stm32h7x_dual_bank.cfg",
                 "-c",
-                "program ./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension} verify reset exit",
+                "init; reset halt; flash erase_sector 0 0 last; program ./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension} verify reset exit",
             ],
             "group": "build",
             "dependsOn": [
                 "cargo build debug",
-                "OpenOcd Erase"
             ],
         },
         {
