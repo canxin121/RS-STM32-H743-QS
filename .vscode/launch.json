@@ -1,5 +1,5 @@
 {
-    // Replace "STM32H745ZITx" to your chip (chip name from Crotex-Debug)
+    // Replace "STM32H745ZITx" to your chip (chip name from Probe-rs)
     // Replace "thumbv7em-none-eabihf" to your target platfrom
     // Replace "stlink.cfg" to your interface cfg of openocd
     // Replace "stm32h7x_dual_bank.cfg" to your target cfg of openocd
