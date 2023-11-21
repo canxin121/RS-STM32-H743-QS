@@ -1,10 +1,107 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
+    // Replace "thumbv7em-none-eabihf" to your target platfrom
+    // Replace "STM32H745ZITx" to your chip (chip name from Probe-rs)
+    // Replace "stlink.cfg" to your interface cfg of openocd
+    // Replace "stm32h7x_dual_bank.cfg" to your target cfg of openocd
+    // If you use sh script, Replace "defmt_print.bat" to "defmt_print.sh"
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "cargo build Crt",
+            "label": "OpenOcd Flash Release",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "./stlink.cfg",
+                "-f",
+                "./stm32h7x_dual_bank.cfg",
+                "-c",
+                "program ./target/thumbv7em-none-eabihf/release/${fileBasenameNoExtension} verify reset exit",
+            ],
+            "group": "build",
+            "dependsOn": [
+                "cargo build release",
+                "OpenOcd Erase"
+            ],
+        },
+        {
+            "label": "OpenOcd Flash Debug",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "./stlink.cfg",
+                "-f",
+                "./stm32h7x_dual_bank.cfg",
+                "-c",
+                "program ./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension} verify reset exit",
+            ],
+            "group": "build",
+            "dependsOn": [
+                "cargo build debug",
+                "OpenOcd Erase"
+            ],
+        },
+        {
+            "label": "OpenOcd Erase",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "./stlink.cfg",
+                "-f",
+                "./stm32h7x_dual_bank.cfg",
+                "-c",
+                "init; reset halt; flash erase_sector 0 0 last; reset run; shutdown"
+            ],
+            "group": "none",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "close": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "Cargo Size",
+            "type": "shell",
+            "command": "echo \"Size_of_Debug\";cargo size --bin ${fileBasenameNoExtension};echo \"Size_of_Release\"; cargo size --bin ${fileBasenameNoExtension} --release",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false,
+            },
+            "dependsOn": [
+                "cargo build debug",
+                "cargo build release"
+            ]
+        },
+        {
+            "label": "defmt print",
+            "type": "shell",
+            "command": "${workspaceFolder}/defmt_print.bat",
+            "args": [
+                "./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension}"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "echo": true,
+                "close": true
+            },
+        },
+        {
+            "label": "Look for rtt",
+            "type": "shell",
+            "command": "rust-nm -S ./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension}| grep RTT",
+            "group": "none",
+        },
+        {
+            "label": "cargo build debug",
             "type": "shell",
             "command": "~/.cargo/bin/cargo", // note: full path to the cargo
             "args": [
@@ -18,7 +115,22 @@
             },
         },
         {
-            "label": "cargo flash release Crt",
+            "label": "cargo build release",
+            "type": "shell",
+            "command": "~/.cargo/bin/cargo", // note: full path to the cargo
+            "args": [
+                "build",
+                "--release",
+                "--bin",
+                "${fileBasenameNoExtension}",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
+            "label": "Cargo Flash Release",
             "type": "shell",
             "command": "~/.cargo/bin/cargo",
             "args": [
@@ -33,7 +145,21 @@
             ]
         },
         {
-            "label": "probe-rs erase",
+            "label": "Cargo Flash Debug",
+            "type": "shell",
+            "command": "~/.cargo/bin/cargo",
+            "args": [
+                "flash",
+                "--bin",
+                "${fileBasenameNoExtension}",
+                "--chip",
+                "STM32H745ZITx",
+                "--target",
+                "thumbv7em-none-eabihf"
+            ]
+        },
+        {
+            "label": "Probe-rs Erase",
             "type": "shell",
             "command": "probe-rs",
             "args": [
@@ -41,6 +167,6 @@
                 "--chip",
                 "STM32H745ZITx",
             ]
-        }
+        },
     ]
 }
