@@ -16,7 +16,7 @@
                 "-f",
                 "./stm32h7x_dual_bank.cfg",
                 "-c",
-                "init; reset halt; flash erase_sector 0 0 last; program ./target/thumbv7em-none-eabihf/release/${fileBasenameNoExtension} verify reset exit",
+                "init; reset halt; program ./target/thumbv7em-none-eabihf/release/${fileBasenameNoExtension} verify reset exit",
             ],
             "group": "build",
             "dependsOn": [
@@ -33,7 +33,7 @@
                 "-f",
                 "./stm32h7x_dual_bank.cfg",
                 "-c",
-                "init; reset halt; flash erase_sector 0 0 last; program ./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension} verify reset exit",
+                "init; reset halt; program ./target/thumbv7em-none-eabihf/debug/${fileBasenameNoExtension} verify reset exit",
             ],
             "group": "build",
             "dependsOn": [
@@ -50,7 +50,7 @@
                 "-f",
                 "./stm32h7x_dual_bank.cfg",
                 "-c",
-                "init; reset halt; flash erase_sector 0 0 last; reset run; shutdown"
+                "init; reset halt; reset run; shutdown"
             ],
             "group": "none",
             "presentation": {
